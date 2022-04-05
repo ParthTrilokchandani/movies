@@ -1,6 +1,6 @@
 import { Spinner } from "@chakra-ui/react";
 import { FC } from "react";
-import "./App.css";
+import "../App.css";
 const loader: FC = () => (
   <Spinner
     className="App"

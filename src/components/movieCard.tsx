@@ -4,6 +4,7 @@ import { Movie } from "../classes/Movie";
 const MovieCard: FC<{ movie: Movie }> = ({ movie }) => {
   return (
     <Box
+      margin={"1.5"}
       padding={"1px"}
       boxShadow={"2xl"}
       textAlign={"center"}
