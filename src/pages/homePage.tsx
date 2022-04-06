@@ -1,46 +1,66 @@
 import "../App.css";
 import {
+  ReactChild,
+  ReactFragment,
+  ReactPortal,
+  SetStateAction,
+  useState,
+} from "react";
+import { Link } from "react-router-dom";
+import {
   Flex,
   Input,
-  Heading,
   useColorMode,
   InputGroup,
   Button,
   InputLeftElement,
+  InputRightElement,
   SimpleGrid,
+  Text,
+  Heading,
   Spinner,
   CloseButton,
-  InputRightElement,
   OrderedList,
   ListItem,
   List,
 } from "@chakra-ui/react";
 
-import Loader from "../components/activityIndicator";
 import { Search2Icon, MoonIcon, SunIcon, CloseIcon } from "@chakra-ui/icons";
-import useFetchMovies from "../hooks/fetchMovies";
-import { useState } from "react";
+import Loader from "../components/activityIndicator";
 import MovieCard from "../components/movieCard";
-import { Link } from "react-router-dom";
+import useFetchMovies from "../hooks/useFetchMovies";
+import useFetchSearchMovie from "../hooks/useFetchSearchMovie";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function HomePage() {
   const [page, setPage] = useState(1);
+  const [value, setValue] = useState("");
+
+  const handleChange = (event: { target: { value: SetStateAction<string> } }) =>
+    setValue(event.target.value);
 
   const { colorMode, toggleColorMode } = useColorMode();
   const { movies, isLoading } = useFetchMovies(page);
+  const { searchMovies } = useFetchSearchMovie(value);
 
   // if (isLoading) return <Spinner />;
 
   return (
     <div className="App">
       <Flex justify={"center"}>
+        <Text mb="8px">Value: {value}</Text>
         <InputGroup flex={0}>
           <InputLeftElement
             pointerEvents="none"
             children={<Search2Icon color="gray.300" />}
           />
-          <Input placeholder="Search Movies" size="md" width="2xl" />
+          <Input
+            placeholder="Search Movies"
+            size="md"
+            width="2xl"
+            value={value}
+            onChange={handleChange}
+          />
           <InputRightElement
             onClick={() => {
               console.log("clicked");
@@ -58,10 +78,9 @@ function HomePage() {
         </Button>
       </Flex>
       {/* <List margin={1}>
-        <ListItem>Lorem ipsum dolor sit amet</ListItem>
-        <ListItem>Consectetur adipiscing elit</ListItem>
-        <ListItem>Integer molestie lorem at massa</ListItem>
-        <ListItem>Facilisis in pretium nisl aliquet</ListItem>
+        {searchMovies.map((searchResult) => (
+          <ListItem>{searchResult}</ListItem>
+        ))}
       </List> */}
 
       <InfiniteScroll
@@ -70,13 +89,13 @@ function HomePage() {
           setPage((currPage) => currPage + 1);
         }}
         hasMore={true}
-        loader={<Loader />}
+        loader={false}
       >
-        {/* loop in data from api using hook */}
         <SimpleGrid
           columns={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }}
           gridGap={2}
         >
+          {/* loop in data from api using hook */}
           {movies.map((movie) => (
             <Link
               key={movie.id}

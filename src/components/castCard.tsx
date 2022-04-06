@@ -44,6 +44,7 @@ const CastBody = styled.div``;
 const CastName = styled.div`
   font-size: 14px;
   font-weight: bold;
+  color: #cbd5e1;
 `;
 
 const CastCharacter = styled.div`
