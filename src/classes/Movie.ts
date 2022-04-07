@@ -3,7 +3,7 @@ export type Movie = {
   adult: boolean;
   overview: string;
   release_date: string;
-  genre_ids: number[];
+  name: string[];
   id: number;
   original_title: string;
   original_language: string;

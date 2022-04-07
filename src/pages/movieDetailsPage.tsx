@@ -1,4 +1,12 @@
-import { Box, Heading, Text, Flex, SimpleGrid, Center } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Flex,
+  SimpleGrid,
+  Center,
+  Badge,
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useParams } from "react-router";
 import CastCard from "../components/castCard";
@@ -16,8 +24,13 @@ export default function MovieDetailsPage() {
   const imageUrl =
     "https://image.tmdb.org/t/p/w500" + movieDetails.poster_path ?? "";
   const backDropImageUrl =
-    "https://image.tmdb.org/t/p/w500" + movieDetails.backdrop_path ?? "";
-
+    "https://image.tmdb.org/t/p/original" + movieDetails.backdrop_path ?? "";
+  const date = new Date(movieDetails.release_date);
+  const newDate = date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
   return (
     <Box width={"100%"} bgColor={"black"} minHeight={"90vh"}>
       <PosterCard style={{ backgroundImage: `url(${backDropImageUrl})` }}>
@@ -28,17 +41,31 @@ export default function MovieDetailsPage() {
             <Text fontSize={"2xl"} mb={"10"} color={"white"}>
               {movieDetails.tagline}
             </Text>
-            <Text color={"white"}>
-              Release date :- {movieDetails.release_date}
-            </Text>
-            <Text as="em" color={"white"}>
-              Description :- {movieDetails.overview}
-            </Text>
           </Box>
         </PosterCardBody>
       </PosterCard>
+      <Box m={"10"}>
+        {movieDetails.genres.map((genre) => (
+          <Badge
+            key={genre.id}
+            variant="outline"
+            colorScheme="green"
+            borderRadius={8}
+            me={1}
+            mb={2}
+          >
+            <Text fontSize={"sm"} color={"white"}>
+              {genre.name}
+            </Text>
+          </Badge>
+        ))}
+        <Text color={"white"}>Release date :- {newDate}</Text>
+        <Text as="em" color={"white"}>
+          Description :- {movieDetails.overview}
+        </Text>
+      </Box>
 
-      <Center marginTop={"-8%"}>
+      <Center>
         <Heading color={"white"} m={"5"} fontSize={"30"} float={"right"}>
           Casts
         </Heading>
@@ -58,10 +85,10 @@ export default function MovieDetailsPage() {
 }
 
 const PosterCard = styled.div`
-  height: 400px;
+  height: 550px;
   background-size: cover;
   background-position: center;
-  margin-bottom: 10%;
+  margin-bottom: 2%;
 `;
 
 const PosterCardBody = styled.div`
@@ -76,10 +103,10 @@ const PosterCardBody = styled.div`
 `;
 
 const PosterImage = styled.img`
-  border-radius: 10%;
+  border-radius: 8%;
   height: 320px;
   max-width: 320px;
-  @media only screen and (max-width: 720px) {
+  @media only screen and (max-width: 812px) {
     display: none;
   }
 `;

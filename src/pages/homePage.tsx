@@ -96,6 +96,7 @@ function HomePage() {
           gridGap={2}
         >
           {/* loop in data from api using hook */}
+          {console.log(movies)}
           {movies.map((movie) => (
             <Link
               key={movie.id}
